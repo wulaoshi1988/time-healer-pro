@@ -113,7 +113,10 @@ function DialogueView({ playerStats, setPlayerStats }) {
         setIsTyping(true)
 
         try {
-            const response = await fetch('http://localhost:3001/api/chat', {
+            const apiUrl = process.env.NODE_ENV === 'production' 
+                ? '/api/chat' 
+                : 'http://localhost:3001/api/chat'
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
