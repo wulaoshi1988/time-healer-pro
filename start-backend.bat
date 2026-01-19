@@ -1,0 +1,6 @@
+@echo off
+echo Starting backend server...
+cd /d C:\Users\54DeYu\time-healer-pro
+start "Time Healer Backend" cmd /k "npm run server"
+echo Backend server starting...
+pause
