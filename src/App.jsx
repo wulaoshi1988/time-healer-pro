@@ -138,11 +138,12 @@ function DialogueView({ playerStats, setPlayerStats }) {
                     progress: Math.min(100, prev.progress + 10)
                 }))
             } else {
-                setMessages([...newMessages, { role: 'ai', content: '抱歉，我现在无法回复。请稍后再试。' }])
+                console.error('API返回错误:', data)
+                setMessages([...newMessages, { role: 'ai', content: `抱歉，出现了问题：${data.error || '未知错误'}。` }])
             }
         } catch (error) {
             console.error('AI对话错误:', error)
-            setMessages([...newMessages, { role: 'ai', content: '连接失败，请确保后端服务器正在运行。' }])
+            setMessages([...newMessages, { role: 'ai', content: `连接失败：${error.message || '网络错误'}` }])
         }
 
         setIsTyping(false)

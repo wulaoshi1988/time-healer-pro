@@ -1,5 +1,3 @@
-import { zhipu } from '@zhipuai/sdk';
-
 export default async function handler(req, res) {
   // CORS设置
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -21,6 +19,13 @@ export default async function handler(req, res) {
 
   try {
     const { messages, playerStats, chapter } = req.body;
+
+    // 调试日志
+    console.log('收到请求:', { 
+      messageCount: messages?.length, 
+      chapter, 
+      hasApiKey: !!process.env.ZHIPU_API_KEY 
+    });
 
     // 构建系统提示词
     const systemPrompt = `你是"小光"，一个温暖、耐心、善解人意的时间旅行伙伴和心理导师。
@@ -86,10 +91,12 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('AI对话错误:', error);
-    res.status(500).json({ 
-      success: false, 
-      error: 'AI服务暂时不可用，请稍后再试' 
+    console.error('AI对话错误:', error.message);
+    console.error('错误堆栈:', error.stack);
+    res.status(500).json({
+      success: false,
+      error: 'AI服务暂时不可用，请稍后再试',
+      debug: error.message
     });
   }
 }
